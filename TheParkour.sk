@@ -34,10 +34,6 @@ options:
 
 	tag: &7[&aThe&6Parkour&7]
 
-# Skript Variables ! #
-variables:
-	{theparkour.progress.%player%} = false
-
 # Commands ! #
 
 command /theparkour [<text>] [<text>]:
@@ -159,4 +155,4 @@ on right click on sign:
 		if line 2 of clicked block is "&4Click PPM to":
 			if player has permission "theparkour.admin" or "theparkour.*":
 				teleport player to {theparkour.lobby}
-				send "{@tag} &aTeleportation successful !" &aTeleportation successful !"
+				send "{@tag} &aTeleportation successful !"
