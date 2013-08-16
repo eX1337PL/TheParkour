@@ -109,6 +109,13 @@ command /theparkour [<text>] [<text>]:
 					else:
 						send "{@tag} {@ErrorWithPermission}"
 						stop
+		if arg 1 is "help":
+			if arg 2 is not set:
+				if player has permission "theparkour.admin" or "theparkour.*" or "theparkour.gracz":
+					send "&7------------------{@tag}------------------"
+					send "&3There are two types of help which are listed under"
+					send "&6/theparkour help admin &7- Show commands for Admin"
+					send "&6/theparkour help player &7- Show commands for Player"
 on sign change:
 	if line 1 is "[parkour]":
 		if player has permission "theparkour.admin" or "theparkour.*":
@@ -152,4 +159,4 @@ on right click on sign:
 		if line 2 of clicked block is "&4Click PPM to":
 			if player has permission "theparkour.admin" or "theparkour.*":
 				teleport player to {theparkour.lobby}
-				send "{@tag} &aTeleportation successful !"
+				send "{@tag} &aTeleportation successful !" &aTeleportation successful !"
