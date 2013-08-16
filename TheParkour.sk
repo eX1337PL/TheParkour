@@ -1,0 +1,141 @@
+options:
+# Commands #
+
+# /theparkour setlobby
+# /theparkour setspawn [Arena Name]
+# /theparkour join [Arena Name]
+# /theparkour delete [Arena Name]
+# /theparkour create [Arena Name]
+# /theparkour list
+# /theparkour leave
+
+# Permissions #
+
+# theparkour.player
+# theparkour.admin
+# theparkour.*
+
+# Messages #
+
+	CommandDisabledOnParkour: &cThis command is Disabled on Parkour !
+	PleaseTypeArenaName: &cPlease type Arena Name !
+	ErrorWithPermission: &cYou do not have enought permission !
+	ErrorWithCreateArena: &cError with Create Arena !
+	ErrowWithSetLobby: &cError with Set Main Lobby !
+	ErrorWithSetArenaSpawn: &cError with Set Arena Spawn !
+	ErrorWithJoinNotExistArena: &cThis Arena does not exist !
+	ErrorWithDeleteArena: &cError with delete Arena !
+	SuccesfullyCreatedArena: &aArena created successful !
+	SuccesfullyDeleteArena: &aArena delete successful !
+	SuccesfullySetLobby: &aMain Lobby set successful !
+	SuccesfullySetArenaSpawn: &aArena spawn set successful !
+
+# Skript Options #
+
+	tag: &7[&aThe&6Parkour&7]
+
+# Skript Variables ! #
+variables:
+	{theparkour.progress.%player%} = false
+
+# Commands ! #
+
+command /theparkour [<text>] [<text>]:
+	aliases: kz, pk, parkour
+	trigger:
+		if arg 1 is "create":
+			if arg 2 is set:
+				if player has permission "theparkour.admin" or "theparkour.*":
+					add "%arg 2%" to {theparkour.parkourlist::*}
+					set {theparkour.%arg 2%} to location of player
+					send "{@tag} {@SuccesfullyCreatedArena}"
+					stop
+				else:
+					send "{@tag} {@ErrorWithPermission}"
+			else:
+				send "{@tag} {@PleaseTypeArenaName}"
+				stop
+		if arg 1 is "delete":
+			if arg 2 is set:
+				if player has permission "theparkour.admin" or "theparkour.*":
+					delete {theparkour.%arg 2%}
+					remove "%arg 2%" from {theparkour.parkourlist::*}
+					send "{@tag} {@SuccesfullyDeleteArena}"
+					stop
+				else:
+					send "{@tag} {@ErrorWithPermission}"
+			else:
+				send "{@tag} {@PleaseTypeArenaName}"
+				stop
+		if arg 1 is "list":
+			if arg 2 is not set:
+				if player has permission "theparkour.admin" or "theparkour.gracz" or "theparkour.*":
+					send "{@tag} &6Parkour &aList:"
+					send "&c%{theparkour.parkourlist::*}%"
+					stop
+				else:
+					send "{@tag} {@ErrorWithPermission}"
+					stop
+		if arg 1 is "join":
+			if arg 2 is set:
+				if player has permission "theparkour.admin" or "theparkour.gracz" or "theparkour.*":
+					send "{@tag} &aTeleportation successful !"
+					teleport player to {theparkour.%arg 2%}
+					set {theparkour.progress.%player%} to true
+					stop
+				else:
+					send "{@tag} {@ErrorWithPermission}"
+					stop
+			else:
+				send "{@tag} {@PleaseTypeArenaName}"
+				stop
+		if arg 1 is "setlobby":
+			if arg 2 is not set:
+				if player has permission "theparkour.admin" or "theparkour.*":
+					send "{@tag} {@SuccesfullySetLobby}"
+					set {theparkour.lobby} to location of player
+					stop
+				else:
+					send "{@tag} {@ErrorWithPermission}"
+					stop
+		if arg 1 is "leave":
+			if arg 2 is not set:
+				if {theparkour.lobby} is set:
+					if player has permission "theparkour.admin" or "theparkour.gracz" or "theparkour.*":
+						send "{@tag} &aSuccesful leave the Arena !"
+						teleport player to {theparkour.lobby}
+						set {theparkour.progress.%player%} to false
+						stop
+					else:
+						send "{@tag} {@ErrorWithPermission}"
+						stop
+on sign change:
+	if line 1 is "[parkour]":
+		if player has permission "theparkour.admin" or "theparkour.*":
+			if line 2 is not empty:
+				if {theparkour.%line 2%} is set:
+					set line 1 to "&8[&eParkour&8]"
+					set line 3 to "&4PPM to Join"
+					set line 4 to "&4The Arena"
+					send "{@tag} &aSign for &6Parkour &acreated successful"
+					stop
+	if line 1 is "[parkourleave]":
+		if player has permission "theparkour.admin" or "theparkour.*":
+			set line 1 to "&8[&eParkour&8]"
+			set line 2 to "&4Click PPM to"
+			set line 3 to "&4Left the"
+			set line 4 to "&4Arena"
+			send "{@tag} &aSign for &6Parkour &acreated successful"
+			stop
+on right click on sign:
+	if line 1 of clicked block is "&8[&eParkour&8]":
+		if player has permission "theparkour.admin" or "theparkour.*":
+			if line 2 of clicked block is not empty:
+				{theparkour.%line 2 of clicked block%} is set:
+					teleport player to {theparkour.%line 2 of clicked block%}
+					send "{@tag} &aTeleportation successful !"
+	if line 1 of clicked block is "&8[&eParkour&8]":
+		if line 2 of clicked block is "&4Click PPM to":
+			if player has permission "theparkour.admin" or "theparkour.*":
+				teleport player to {theparkour.lobby}
+				send "{@tag} &aTeleportation successful !"
