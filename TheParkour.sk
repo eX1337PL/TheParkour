@@ -119,6 +119,20 @@ on sign change:
 					set line 4 to "&4The Arena"
 					send "{@tag} &aSign for &6Parkour &acreated successful"
 					stop
+				else:
+					set line 1 to "&8[&eParkour&8]"
+					set line 2 to "&4Error! This"
+					set line 3 to "&4Arena does"
+					set line 4 to "&4not exist"
+					send "{@tag} &cError with create Sign for &6Parkour &c!"
+					stop
+		else:
+			set line 1 to "&8[&eParkour&8]"
+			set line 2 to "&4You do not"
+			set line 3 to "&4have perm to"
+			set line 4 to "&4do this!"
+			send "{@tag} &cError with create Sign for &6Parkour &c!"
+			stop
 	if line 1 is "[parkourleave]":
 		if player has permission "theparkour.admin" or "theparkour.*":
 			set line 1 to "&8[&eParkour&8]"
